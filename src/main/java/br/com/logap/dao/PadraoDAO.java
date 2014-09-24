@@ -4,6 +4,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
 
 import br.com.logap.dominio.PadraoDominio;
 
@@ -21,6 +25,35 @@ public class PadraoDAO<T extends PadraoDominio> {
 	private SessionFactory fabricaSessoes;
 	
 	/**
+	 * Sessão para operações;
+	 */
+	private Session sessao;
+	
+	/**
+	 * Transação da sessão.
+	 */
+	private Transaction transacao;
+	
+	/**
+	 * Construtor vazio.
+	 */
+	public PadraoDAO() {
+		Configuration configuracao = new Configuration();
+		configuracao.configure("hibernate.cfg.xml");
+		
+		ServiceRegistry registroServico = new ServiceRegistryBuilder().applySettings(configuracao.getProperties()).buildServiceRegistry();
+		
+		fabricaSessoes = configuracao.buildSessionFactory(registroServico);
+	}
+	
+	/**
+	 * Encerra o DAO.
+	 */
+	public void fechar() {
+		fabricaSessoes.close();
+	}
+	
+	/**
 	 * Método usado para atualizar um objeto.
 	 * 
 	 * @param objeto
@@ -28,7 +61,9 @@ public class PadraoDAO<T extends PadraoDominio> {
 	 * @throws HibernateException
 	 */
 	public boolean atualizar(T objeto) throws HibernateException {
-		getSessaoAtual().merge(objeto);
+		iniciarOperacao();
+		sessao.merge(objeto);
+		encerrarOperacao();
 		
 		return true;
 	}
@@ -41,7 +76,9 @@ public class PadraoDAO<T extends PadraoDominio> {
 	 * @throws HibernateException
 	 */
 	public boolean inserir(T objeto) throws HibernateException {
-		getSessaoAtual().persist(objeto);
+		iniciarOperacao();
+		sessao.persist(objeto);
+		encerrarOperacao();
 		
 		return true;
 	}
@@ -54,7 +91,9 @@ public class PadraoDAO<T extends PadraoDominio> {
 	 * @throws HibernateException
 	 */
 	public boolean remover(T objeto) throws HibernateException {
-		getSessaoAtual().delete(objeto);
+		iniciarOperacao();
+		sessao.delete(objeto);
+		encerrarOperacao();
 		
 		return true;
 	}
@@ -68,17 +107,21 @@ public class PadraoDAO<T extends PadraoDominio> {
 	 * @throws HibernateException
 	 * @throws IndexOutOfBoundsException
      */
-	protected T buscarPorId(long id, Class<T> classe) throws HibernateException, IndexOutOfBoundsException {
+	public T buscarPorIdClasse(long id, Class<T> classe) throws HibernateException, IndexOutOfBoundsException {
+		iniciarOperacao();
+		
 		StringBuilder textoConsulta = new StringBuilder();
 		textoConsulta.append("SELECT objeto FROM ");
 		textoConsulta.append(classe.getSimpleName());
 		textoConsulta.append(" objeto WHERE id = ");
 		textoConsulta.append(id);
 		
-		Query consulta = (Query) getSessaoAtual().createQuery(textoConsulta.toString());
+		Query consulta = (Query) sessao.createQuery(textoConsulta.toString());
 		
 		@SuppressWarnings("unchecked")
 		T resultado = (T) consulta.uniqueResult();
+		
+		encerrarOperacao();
 		
 		return resultado;
 	}
@@ -89,7 +132,22 @@ public class PadraoDAO<T extends PadraoDominio> {
 	 * @return
 	 * @throws HibernateException
 	 */
-	protected Session getSessaoAtual() throws HibernateException {
+	private Session getNovaSessao() throws HibernateException {
     	return fabricaSessoes.getCurrentSession();
     }
+	
+	/**
+	 * Método usado para iniciar uma operação com o banco de dados.
+	 */
+	private void iniciarOperacao() {
+		sessao = getNovaSessao();
+		transacao = sessao.beginTransaction();
+	}
+	
+	/**
+	 * Método usado para encerrar uma operação com o banco de dados.
+	 */
+	private void encerrarOperacao() {
+		transacao.commit();
+	}
 }

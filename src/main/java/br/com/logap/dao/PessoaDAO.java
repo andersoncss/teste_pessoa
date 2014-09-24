@@ -20,6 +20,6 @@ public class PessoaDAO extends PadraoDAO<Pessoa> {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public Pessoa buscarPorId(long id) throws HibernateException, IndexOutOfBoundsException {
-		return super.buscarPorId(id, Pessoa.class);
+		return super.buscarPorIdClasse(id, Pessoa.class);
 	}
 }

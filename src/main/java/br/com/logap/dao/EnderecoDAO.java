@@ -20,6 +20,6 @@ public class EnderecoDAO extends PadraoDAO<Endereco> {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public Endereco buscarPorId(long id) throws HibernateException, IndexOutOfBoundsException {
-		return super.buscarPorId(id, Endereco.class);
+		return super.buscarPorIdClasse(id, Endereco.class);
 	}
 }
