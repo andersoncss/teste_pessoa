@@ -12,18 +12,9 @@ public class Teste {
 	 * Método que executa os testes.
 	 */
 	public void executarTestes() {
-		Endereco endereco = new Endereco();
-		endereco.setBairro("Lagoa Nova");
-		endereco.setCep("59078-970");
-		endereco.setComplemento("UFRN");
-		endereco.setNumero(56);
-		endereco.setRua("Capitão Mor Gouveia");
+		Endereco endereco = criarEndereco();
 		
-		Pessoa pessoa = new Pessoa();
-		pessoa.setCpf("056.963.789-21");
-		pessoa.setDataNascimento(new Date());
-		pessoa.setNome("João");
-		pessoa.setEndereco(endereco);
+		Pessoa pessoa = criarPessoa(endereco);
 		
 		inserirEnderecoPessoa(endereco, pessoa);
 		
@@ -39,6 +30,38 @@ public class Teste {
 		
 		System.out.println("Rua: " + enderecoConsultado.getRua());
 		System.out.println("Nome: " + pessoaConsultada.getNome());
+	}
+	
+	/**
+	 * Metodo usado para criar um endereço.
+	 * 
+	 * @return
+	 */
+	private Endereco criarEndereco() {
+		Endereco endereco = new Endereco();
+		endereco.setBairro("Lagoa Nova");
+		endereco.setCep("59078-970");
+		endereco.setComplemento("UFRN");
+		endereco.setNumero(56);
+		endereco.setRua("Capitão Mor Gouveia");
+		
+		return endereco;
+	}
+	
+	/**
+	 * Método usado para criar uma pessoa com determinado endereço.
+	 * 
+	 * @param endereco
+	 * @return
+	 */
+	private Pessoa criarPessoa(Endereco endereco) {
+		Pessoa pessoa = new Pessoa();
+		pessoa.setCpf("056.963.789-21");
+		pessoa.setDataNascimento(new Date());
+		pessoa.setNome("João");
+		pessoa.setEndereco(endereco);
+		
+		return pessoa;
 	}
 	
 	/**
