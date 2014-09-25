@@ -20,6 +20,9 @@
 
         <!-- Permiti o gerenciamento de contexto automático de sessão do Hibernate -->
         <property name="current_session_context_class">thread</property>
+        
+        <!-- Cria ou atualiza o banco ao iniciar a aplicação -->
+        <property name="hbm2ddl.auto">update</property>  
 
         <!-- Mostrar comandos SQL -->
         <property name="show_sql">true</property>
