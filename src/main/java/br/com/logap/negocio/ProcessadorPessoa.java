@@ -1,5 +1,7 @@
 package br.com.logap.negocio;
 
+import javax.inject.Inject;
+
 import org.hibernate.HibernateException;
 
 import br.com.logap.dao.PessoaDAO;
@@ -15,13 +17,13 @@ public class ProcessadorPessoa {
 	/**
 	 * DAO responsável pela persistência e consulta dos objetos do tipo Pessoa.
 	 */
+	@Inject
 	private PessoaDAO pessoaDAO;
 	
 	/**
 	 * Construtor vazio.
 	 */
 	public ProcessadorPessoa() {
-		pessoaDAO = new PessoaDAO();
 	}
 	
 	/**

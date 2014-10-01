@@ -10,6 +10,7 @@ import br.com.logap.dominio.Pessoa;
  * @author Anderson Santos
  *
  */
+
 public class PessoaDAO extends PadraoDAO<Pessoa> {
 	/**
 	 * Método usado para buscar a pessoa pelo id.

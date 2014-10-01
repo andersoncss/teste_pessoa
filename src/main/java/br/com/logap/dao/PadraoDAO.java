@@ -1,13 +1,11 @@
 package br.com.logap.dao;
 
+import javax.inject.Inject;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 
 import br.com.logap.dominio.PadraoDominio;
 
@@ -19,14 +17,11 @@ import br.com.logap.dominio.PadraoDominio;
  * @param <T>
  */
 public class PadraoDAO<T extends PadraoDominio> {
-	/**
-	 * Fábrica de sessões.
-	 */
-	private SessionFactory fabricaSessoes;
 	
 	/**
 	 * Sessão para operações;
 	 */
+	@Inject
 	private Session sessao;
 	
 	/**
@@ -38,20 +33,9 @@ public class PadraoDAO<T extends PadraoDominio> {
 	 * Construtor vazio.
 	 */
 	public PadraoDAO() {
-		Configuration configuracao = new Configuration();
-		configuracao.configure("hibernate.cfg.xml");
 		
-		ServiceRegistry registroServico = new ServiceRegistryBuilder().applySettings(configuracao.getProperties()).buildServiceRegistry();
-		
-		fabricaSessoes = configuracao.buildSessionFactory(registroServico);
 	}
-	
-	/**
-	 * Encerra o DAO.
-	 */
-	public void fechar() {
-		fabricaSessoes.close();
-	}
+
 	
 	/**
 	 * Método usado para atualizar um objeto.
@@ -64,7 +48,6 @@ public class PadraoDAO<T extends PadraoDominio> {
 		iniciarOperacao();
 		sessao.merge(objeto);
 		encerrarOperacao();
-		
 		return true;
 	}
 	
@@ -79,7 +62,6 @@ public class PadraoDAO<T extends PadraoDominio> {
 		iniciarOperacao();
 		sessao.persist(objeto);
 		encerrarOperacao();
-		
 		return true;
 	}
 	
@@ -94,7 +76,6 @@ public class PadraoDAO<T extends PadraoDominio> {
 		iniciarOperacao();
 		sessao.delete(objeto);
 		encerrarOperacao();
-		
 		return true;
 	}
 	
@@ -108,6 +89,7 @@ public class PadraoDAO<T extends PadraoDominio> {
 	 * @throws IndexOutOfBoundsException
      */
 	public T buscarPorIdClasse(long id, Class<T> classe) throws HibernateException, IndexOutOfBoundsException {
+		
 		iniciarOperacao();
 		
 		StringBuilder textoConsulta = new StringBuilder();
@@ -124,23 +106,13 @@ public class PadraoDAO<T extends PadraoDominio> {
 		encerrarOperacao();
 		
 		return resultado;
-	}
-	
-	/**
-	 * Método usado para obter a sessão atual.
-	 * 
-	 * @return
-	 * @throws HibernateException
-	 */
-	private Session getNovaSessao() throws HibernateException {
-    	return fabricaSessoes.getCurrentSession();
-    }
+	}	
+
 	
 	/**
 	 * Método usado para iniciar uma operação com o banco de dados.
 	 */
 	private void iniciarOperacao() {
-		sessao = getNovaSessao();
 		transacao = sessao.beginTransaction();
 	}
 	

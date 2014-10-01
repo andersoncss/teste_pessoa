@@ -2,12 +2,26 @@ package br.com.logap.teste;
 
 import java.util.Date;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
 import br.com.logap.dominio.Endereco;
 import br.com.logap.dominio.Pessoa;
 import br.com.logap.negocio.ProcessadorEndereco;
 import br.com.logap.negocio.ProcessadorPessoa;
 
+@ApplicationScoped  
 public class Teste {
+	
+	
+	@Inject
+	private ProcessadorEndereco processadorEndereco;
+	
+	@Inject
+	private ProcessadorPessoa processadorPessoa;
+	
+	
+	
 	/**
 	 * Método que executa os testes.
 	 */
@@ -71,10 +85,7 @@ public class Teste {
 	 * @param pessoa
 	 */
 	private void atualizarEnderecoPessoa(Endereco endereco, Pessoa pessoa) {
-		ProcessadorEndereco processadorEndereco = new ProcessadorEndereco();
 		processadorEndereco.atualizar(endereco);
-		
-		ProcessadorPessoa processadorPessoa = new ProcessadorPessoa();
 		processadorPessoa.atualizar(pessoa);
 	}
 	
@@ -85,10 +96,8 @@ public class Teste {
 	 * @param pessoa
 	 */
 	private void inserirEnderecoPessoa(Endereco endereco, Pessoa pessoa) {
-		ProcessadorEndereco processadorEndereco = new ProcessadorEndereco();
-		processadorEndereco.inserir(endereco);
 		
-		ProcessadorPessoa processadorPessoa = new ProcessadorPessoa();
+		processadorEndereco.inserir(endereco);
 		processadorPessoa.inserir(pessoa);
 	}
 	
@@ -99,10 +108,7 @@ public class Teste {
 	 * @param pessoa
 	 */
 	private void removerEnderecoPessoa(Endereco endereco, Pessoa pessoa) {
-		ProcessadorPessoa processadorPessoa = new ProcessadorPessoa();
 		processadorPessoa.remover(pessoa);
-		
-		ProcessadorEndereco processadorEndereco = new ProcessadorEndereco();
 		processadorEndereco.remover(endereco);
 	}
 	
@@ -113,8 +119,6 @@ public class Teste {
 	 * @return
 	 */
 	private Endereco buscarEnderecoPorId(int idEndereco) {
-		ProcessadorEndereco processadorEndereco = new ProcessadorEndereco();
-		
 		return processadorEndereco.buscarPorId(idEndereco);
 	}
 	
@@ -125,8 +129,6 @@ public class Teste {
 	 * @return
 	 */
 	private Pessoa buscarPessoaPorId(int idPessoa) {
-		ProcessadorPessoa processadorPessoa = new ProcessadorPessoa();
-		
 		return processadorPessoa.buscarPorId(idPessoa);
 	}
 }

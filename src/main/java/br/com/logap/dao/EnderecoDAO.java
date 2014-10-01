@@ -10,6 +10,7 @@ import br.com.logap.dominio.Endereco;
  * @author Anderson Santos
  *
  */
+
 public class EnderecoDAO extends PadraoDAO<Endereco> {
 	/**
 	 * Método usado para buscar o endereço pelo id.

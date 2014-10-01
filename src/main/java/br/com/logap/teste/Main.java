@@ -1,5 +1,7 @@
 package br.com.logap.teste;
 
+import br.com.logap.util.WeldContext;
+
 /**
  * Classe principal.
  * 
@@ -13,7 +15,9 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Teste teste = new Teste();
+		
+		
+		Teste teste = WeldContext.INSTANCE.getBean(Teste.class);
 		teste.executarTestes();
 	}
 }

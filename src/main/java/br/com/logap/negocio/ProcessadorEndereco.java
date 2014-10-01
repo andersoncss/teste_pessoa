@@ -1,5 +1,7 @@
 package br.com.logap.negocio;
 
+import javax.inject.Inject;
+
 import org.hibernate.HibernateException;
 
 import br.com.logap.dao.EnderecoDAO;
@@ -15,13 +17,13 @@ public class ProcessadorEndereco {
 	/**
 	 * DAO responsável pela persistência e consulta dos objetos do tipo Endereco.
 	 */
-	private EnderecoDAO enderedoDAO;
+	@Inject
+	private EnderecoDAO enderecoDAO;
 	
 	/**
 	 * Construtor vazio.
 	 */
 	public ProcessadorEndereco() {
-		enderedoDAO = new EnderecoDAO();
 	}
 	
 	/**
@@ -32,7 +34,7 @@ public class ProcessadorEndereco {
 	 * @throws HibernateException
 	 */
 	public boolean atualizar(Endereco endereco) throws HibernateException {
-		return enderedoDAO.atualizar(endereco);
+		return enderecoDAO.atualizar(endereco);
 	}
 	
 	/**
@@ -44,7 +46,7 @@ public class ProcessadorEndereco {
 	 * @throws IndexOutOfBoundsException
 	 */
 	public Endereco buscarPorId(long id) throws HibernateException, IndexOutOfBoundsException {
-		return enderedoDAO.buscarPorId(id);
+		return enderecoDAO.buscarPorId(id);
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public class ProcessadorEndereco {
 	 * @throws HibernateException
 	 */
 	public boolean inserir(Endereco endereco) throws HibernateException {
-		return enderedoDAO.inserir(endereco);
+		return enderecoDAO.inserir(endereco);
 	}
 	
 	/**
@@ -66,6 +68,6 @@ public class ProcessadorEndereco {
 	 * @throws HibernateException
 	 */
 	public boolean remover(Endereco endereco) throws HibernateException {
-		return enderedoDAO.remover(endereco);
+		return enderecoDAO.remover(endereco);
 	}
 }
